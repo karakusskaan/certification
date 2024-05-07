@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sertifikalar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 120px auto;
+            padding: 20px;
+            background-color: #c5c5c5;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        a{
+            color: #000000;
+        }
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sertifikalar</h1>
+        <?php
+        include "ayar.php";
+
+        if(isset($_POST['ad']) ){
+            $ad = ucwords(strtolower($_POST['ad']));
+
+            $SQL = "SELECT * FROM uye_listesi WHERE ad = '$ad' ";
+            $result = $db->query($SQL);
+
+            if ($result && $result->rowCount() > 0) {
+                $user = $result->fetch(PDO::FETCH_ASSOC);
+                $user_id = $user['sira'];
+
+                $SQL = "SELECT * FROM sahipler WHERE user_id = $user_id";
+                $result = $db->query($SQL);
+
+                if ($result && $result->rowCount() > 0) {
+                    echo "<ul>";
+                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                        $sertifika_id = $row['sertifika_id'];
+                        $SQL2 = "SELECT * FROM sertifikalar WHERE sertifika_id = $sertifika_id";
+                        $result2 = $db->query($SQL2);
+                        if ($result2 && $result2->rowCount() > 0) {
+                            while ($row2 = $result2->fetch(PDO::FETCH_ASSOC)) {
+                                $sertifika_adi = $row2['sertifika_adi']; // Sertifika adını al
+                                echo "<li><a href='sertifika_detay.php?sertifika_id=$sertifika_id&ad=$ad'>$sertifika_adi</a></li>";
+                            }
+                        }
+                    }
+                    echo "</ul>";
+                } else {
+                    echo "Herhangi bir sertifika bulunamadı.";
+                }
+            } else {
+                echo "Veritabanında bu isimde bir kullanıcı bulunamadı.";
+            }
+        }
+        ?>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Kişi Arama Formu</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Girne Üniveritesi Sertifika Sorgulama</h1>
+        <form action="index.php" method="POST">
+            <label for="ad">Kullanıcı Adı:</label>
+            <input type="text" id="ad" name="ad"> <br>
+            <input type="submit" value="Ara">
+        </form>
+    </div>
+
+
+    </div>
+</body>
+
+<style>body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    height: 300px;
+    width: 500px;
+    margin: 120px auto;
+    padding: 20px;
+    background-color: #c5c5c5;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    
+}
+
+input[type="text"],
+input[type="submit"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+</style>
+</html>

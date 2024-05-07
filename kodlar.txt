@@ -1,0 +1,40 @@
+<?php
+include "ayar.php";
+
+if(isset($_POST['ad']) && isset($_POST['soyad'])){
+    $ad = ucwords(strtolower($_POST['ad']));
+    $soyad = mb_strtoupper($_POST['soyad']);
+
+    $SQL = "SELECT * FROM uye_listesi WHERE ad = '$ad' AND soyad='$soyad'";
+    $result = $db->query($SQL);
+
+    if ($result && $result->rowCount() > 0) {
+
+        echo $ad," ",$soyad;
+      
+      
+       /*
+        $sertifika = imagecreatefromjpeg('sertifika2.jpg');
+        $text_color = imagecolorallocate($sertifika, 0, 0, 0); // Siyah renk
+        $font = "arial.ttf"; // Kullanılacak font dosyası
+        $sertifika_metni = ("$ad $soyad");
+        // Metni boyutlarını al
+        $metin_boyutu = imagettfbbox(60, 0, $font, $sertifika_metni);
+        // Metnin genişliği ve yüksekliği
+        $metnin_genisligi = $metin_boyutu[2] - $metin_boyutu[0];
+        $metnin_yuksekligi = $metin_boyutu[1] - $metin_boyutu[7];
+        // Metni sertifikaya ortalamak için uygun pozisyona yerleştir
+        $metnin_x = (imagesx($sertifika) - $metnin_genisligi) / 2;
+        $metnin_y = (imagesy($sertifika) - $metnin_yuksekligi) / 2 + $metnin_yuksekligi / 3;
+        imagettftext($sertifika, 60, 0, $metnin_x, $metnin_y, $text_color, $font, $sertifika_metni);
+        // Sertifikayı gösteren yer
+        header('Content-type: image/jpg');
+        imagepng($sertifika);
+        imagedestroy($sertifika);
+        exit;
+        */
+    }else {
+        echo "Veritabanında bu isimde bir kullanıcı bulunamadı.";
+    }
+}
+?>

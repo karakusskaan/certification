@@ -1,0 +1,62 @@
+<?php
+// sertifika_detay.php
+
+include "ayar.php";
+
+if(isset($_GET['sertifika_id']) && isset($_GET['ad'])) {
+    $sertifika_id = $_GET['sertifika_id'];
+    $ad = $_GET['ad'];
+    
+
+    $SQL = "SELECT * FROM sertifikalar WHERE sertifika_id = $sertifika_id";
+    
+    $result = $db->query($SQL);
+    
+
+
+    if ($result && $result->rowCount() > 0) {
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        
+        // Sertifika oluşturma işlemi
+        $sertifika_adi = $row['sertifika_adi'];
+        
+        // Sertifika adına göre arka plan resmini seç
+        $arka_plan_resmi = "";
+        switch ($sertifika_adi) {
+            case 'A Sertifikası':
+                $arka_plan_resmi = 'A_sertifikasi.jpg';
+                break;
+            case 'B Sertifikası':
+                $arka_plan_resmi = 'B_sertifikasi.jpg';
+                break;
+            case 'C Sertifikası':
+                $arka_plan_resmi = 'C_sertifikasi.jpg';
+                break;
+            default:
+                $arka_plan_resmi = 'default_sertifika.jpg'; // Varsayılan bir resim belirleyebilirsiniz
+        }
+        
+        $sertifika = imagecreatefromjpeg($arka_plan_resmi);
+        $text_color = imagecolorallocate($sertifika, 0, 0, 0); // Siyah renk
+        $font = "arial.ttf"; 
+        $sertifika_metni = $ad  ;
+        // Metni boyutlarını al
+        $metin_boyutu = imagettfbbox(60, 0, $font, $sertifika_metni);
+        // Metnin genişliği ve yüksekliği
+        $metnin_genisligi = $metin_boyutu[2] - $metin_boyutu[0];
+        $metnin_yuksekligi = $metin_boyutu[1] - $metin_boyutu[7];
+        // Metni sertifikaya ortalamak için uygun pozisyona yerleştir
+        $metnin_x = (imagesx($sertifika) - $metnin_genisligi) / 2;
+        $metnin_y = (imagesy($sertifika) - $metnin_yuksekligi) / 2 + $metnin_yuksekligi / 3;
+        imagettftext($sertifika, 60, 0, $metnin_x, $metnin_y, $text_color, $font, $sertifika_metni);
+        // Sertifikayı gösteren yer
+        header('Content-type: image/jpg');
+        imagepng($sertifika);
+        imagedestroy($sertifika);
+        exit;
+  
+    } else {
+        echo "Sertifika detayları bulunamadı.";
+    }  
+}
+?>
